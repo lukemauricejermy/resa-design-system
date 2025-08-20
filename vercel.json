@@ -1,6 +1,4 @@
 {
-  "framework": "storybook",
-  "outputDirectory": "packages/storybook/storybook-static",
   "rewrites": [
     {
       "source": "/(.*)",

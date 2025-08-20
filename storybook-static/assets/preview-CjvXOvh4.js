@@ -1,0 +1,1 @@
+import{R as e}from"./index-BoO70ywZ.js";import{T as o}from"./ThemeContext-DAA-KeqU.js";import"./_commonjsHelpers-CqkleIqs.js";const l={parameters:{actions:{argTypesRegex:"^on[A-Z].*"},controls:{matchers:{color:/(background|color)$/i,date:/Date$/i}}},decorators:[r=>e.createElement(o,null,e.createElement(r,null))]};export{l as default};

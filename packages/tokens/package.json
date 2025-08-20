@@ -1,0 +1,35 @@
+{
+  "name": "@resa/tokens",
+  "version": "0.1.0",
+  "description": "Design tokens for the Resa design system",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "npm run build:css && npm run build:json && npm run build:typescript",
+    "build:css": "node scripts/build-css.js",
+    "build:figma": "node scripts/process-figma.js",
+    "build:json": "node scripts/build-json.js",
+    "build:typescript": "tsc",
+    "dev": "npm run build:css -- --watch",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "postcss": "^8.5.6",
+    "autoprefixer": "^10.4.21"
+  },
+  "keywords": [
+    "design-tokens",
+    "css-variables",
+    "design-system",
+    "tokens"
+  ],
+  "author": "Resa Design Team",
+  "license": "MIT"
+}

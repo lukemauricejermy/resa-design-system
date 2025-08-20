@@ -1,0 +1,29 @@
+{
+  "name": "resa-design-system",
+  "version": "1.0.0",
+  "description": "Resa Design System - A comprehensive design token and component library",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "build:storybook": "cd packages/storybook && npm run build-storybook",
+    "deploy:storybook": "npm run build:storybook && vercel --prod",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "type-check": "turbo run type-check",
+    "update:tokens": "cd packages/tokens && npm run build:tokens",
+    "sync:storybook": "cd packages/storybook && npm run sync-tokens",
+    "update:storybook": "npm run sync:storybook && cd packages/storybook && npm run storybook",
+    "update:all": "npm run update:tokens && npm run sync:storybook && echo '✅ Tokens updated and synced! Now run: npm run update:storybook'",
+    "workflow:help": "echo '📋 Token Update Workflow:\\n1. npm run update:tokens\\n2. npm run sync:storybook\\n3. npm run update:storybook\\n4. Verify in Storybook\\n5. Commit changes\\n\\nNote: sync:storybook also copies avatar-image.png'"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}
+

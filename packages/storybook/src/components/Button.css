@@ -1,0 +1,141 @@
+/* Button Component Styles */
+.button-component {
+  transition: all 0.2s ease;
+}
+
+/* Primary Button States */
+.button-component[data-variant="primary"]:hover {
+  background-color: var(--color-fill-primary-hover) !important;
+}
+
+.button-component[data-variant="primary"]:active {
+  background-color: var(--color-fill-primary-pressed) !important;
+}
+
+.button-component[data-variant="primary"]:focus {
+  background-color: var(--color-fill-primary-active) !important;
+  outline: 2px solid var(--color-border-active);
+  outline-offset: 2px;
+}
+
+/* Secondary Button States */
+.button-component[data-variant="secondary"]:hover {
+  background-color: var(--color-fill-secondary-hover) !important;
+}
+
+.button-component[data-variant="secondary"]:active {
+  background-color: var(--color-fill-secondary-pressed) !important;
+}
+
+.button-component[data-variant="secondary"]:focus {
+  background-color: var(--color-fill-secondary-active) !important;
+  outline: 2px solid var(--color-border-active);
+  outline-offset: 2px;
+}
+
+/* Tertiary Button States */
+.button-component[data-variant="tertiary"]:hover {
+  background-color: var(--color-fill-tertiary-hover) !important;
+  border-color: var(--color-border-stronger) !important;
+}
+
+.button-component[data-variant="tertiary"]:active {
+  background-color: var(--color-fill-tertiary-pressed) !important;
+  border-color: var(--color-border-filled) !important;
+}
+
+.button-component[data-variant="tertiary"]:focus {
+  background-color: var(--color-fill-tertiary-active) !important;
+  border-width: var(--border-width-m) !important;
+  border-color: var(--color-border-active) !important;
+  outline: none;
+}
+
+/* Ghost Button States */
+.button-component[data-variant="ghost"]:hover {
+  background-color: var(--color-fill-tertiary-hover) !important;
+}
+
+.button-component[data-variant="ghost"]:active {
+  background-color: var(--color-fill-tertiary-pressed) !important;
+}
+
+.button-component[data-variant="ghost"]:focus {
+  background-color: var(--color-fill-tertiary-active) !important;
+  outline: 2px solid var(--color-border-active);
+  outline-offset: 2px;
+}
+
+/* Success Button States */
+.button-component[data-variant="success"]:hover {
+  background-color: var(--color-fill-success-hover) !important;
+}
+
+.button-component[data-variant="success"]:active {
+  background-color: var(--color-fill-success-pressed) !important;
+}
+
+.button-component[data-variant="success"]:focus {
+  background-color: var(--color-fill-success-active) !important;
+  outline: 2px solid var(--color-border-success);
+  outline-offset: 2px;
+}
+
+/* Warning Button States */
+.button-component[data-variant="warning"]:hover {
+  background-color: var(--color-fill-warning-hover) !important;
+}
+
+.button-component[data-variant="warning"]:active {
+  background-color: var(--color-fill-warning-pressed) !important;
+}
+
+.button-component[data-variant="warning"]:focus {
+  background-color: var(--color-fill-warning-active) !important;
+  outline: 2px solid var(--color-border-warning);
+  outline-offset: 2px;
+}
+
+/* Error Button States */
+.button-component[data-variant="error"]:hover {
+  background-color: var(--color-fill-error-hover) !important;
+}
+
+.button-component[data-variant="error"]:active {
+  background-color: var(--color-fill-error-pressed) !important;
+}
+
+.button-component[data-variant="error"]:focus {
+  background-color: var(--color-fill-error-active) !important;
+  outline: 2px solid var(--color-border-error);
+  outline-offset: 2px;
+}
+
+/* Info Button States */
+.button-component[data-variant="info"]:hover {
+  background-color: var(--color-fill-info-hover) !important;
+}
+
+.button-component[data-variant="info"]:active {
+  background-color: var(--color-fill-info-pressed) !important;
+}
+
+.button-component[data-variant="info"]:focus {
+  background-color: var(--color-fill-info-active) !important;
+  outline: 2px solid var(--color-border-info);
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+.button-component:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-component:disabled:hover,
+.button-component:disabled:active,
+.button-component:disabled:focus {
+  background-color: inherit !important;
+  border-color: inherit !important;
+  outline: none !important;
+}

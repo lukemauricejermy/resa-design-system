@@ -140,15 +140,15 @@
   --color-semantic-light-fill-rating-active: #ff7e34;
   --color-semantic-light-fill-rating-inactive: #ffefe5;
   --color-semantic-light-border-default: #ece7df;
-  --color-semantic-light-border-strong: #d8cebf;
-  --color-semantic-light-border-stronger: #aa9c88;
   --color-semantic-light-border-active: #1a1a1a;
-  --color-semantic-light-border-inactive: #f2f2f2;
   --color-semantic-light-border-filled: #1a1a1a;
   --color-semantic-light-border-success: #abeaaa;
   --color-semantic-light-border-warning: #fdec71;
   --color-semantic-light-border-error: #f8b1b0;
   --color-semantic-light-border-info: #b1cdfa;
+  --color-semantic-light-border-strong: #d8cebf;
+  --color-semantic-light-border-stronger: #aa9c88;
+  --color-semantic-light-border-inactive: #f2f2f2;
   --color-semantic-dark-content-primary: #ffffff;
   --color-semantic-dark-content-secondary: #e0e0e0;
   --color-semantic-dark-content-tertiary: #b3b3b3;
@@ -202,16 +202,16 @@
   --color-semantic-dark-fill-inactive: #4d4d4d;
   --color-semantic-dark-fill-rating-active: #ff9d66;
   --color-semantic-dark-fill-rating-inactive: #662500;
-  --color-semantic-dark-border-default: #4d4d4d;
-  --color-semantic-dark-border-strong: #808080;
-  --color-semantic-dark-border-stronger: #808080;
+  --color-semantic-dark-border-default: #666666;
   --color-semantic-dark-border-active: #ffffff;
-  --color-semantic-dark-border-inactive: #4d4d4d;
   --color-semantic-dark-border-filled: #ffffff;
   --color-semantic-dark-border-success: #134e21;
   --color-semantic-dark-border-warning: #604d00;
   --color-semantic-dark-border-error: #5c1110;
   --color-semantic-dark-border-info: #163260;
+  --color-semantic-dark-border-strong: #808080;
+  --color-semantic-dark-border-stronger: #808080;
+  --color-semantic-dark-border-inactive: #ffffff;
   --spacing-xxxxl: 0.125rem;
   --spacing-xxxl: 0.25rem;
   --spacing-xxl: 0.375rem;
@@ -384,7 +384,4 @@
   --border-radius-l: 3rem;
   --border-radius-none: 0;
   --border-radius-full: 9999px;
-  --border-width-s: 0.062rem;
-  --border-width-m: 0.125rem;
-  --border-width-none: 0;
 }

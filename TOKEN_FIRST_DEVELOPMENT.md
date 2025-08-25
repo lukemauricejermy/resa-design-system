@@ -1,207 +1,279 @@
-# 🎯 Token-First Development Guide
+# 🚨 TOKEN-FIRST DEVELOPMENT - ZERO TOLERANCE POLICY
 
-## **CRITICAL: Always Reference Design Tokens, Never Use Hardcoded Values**
+## ⚠️ CRITICAL RULE: ALL COMPONENTS MUST USE DESIGN TOKENS
 
-This guide ensures every component in the Resa Design System uses your design tokens instead of hardcoded CSS values.
+**NO EXCEPTIONS. NO HARDCODED VALUES. NO COMPROMISES.**
 
-## 🚨 **What NOT to Do (Hardcoded Values)**
+Every single component in the Resa Design System **MUST** be built using design tokens. This is not a suggestion - it's a requirement.
 
+## 🎯 What This Means
+
+### ✅ **ALLOWED: Token-Based Values**
 ```tsx
-// ❌ WRONG - Hardcoded values
-<div className="bg-[#d8e6fb] text-[#163260] border-[#ece7df]">
-  Content
-</div>
+// CORRECT: Using token-based Tailwind classes
+className="bg-fill-primary text-content-inverse rounded-xs p-layout-md"
 
-// ❌ WRONG - Hardcoded sizes
-<div className="w-10 h-10 text-sm font-medium">
-  Content
-</div>
+// CORRECT: Using programmatic tokens
+style={{ backgroundColor: tokens.colors.semantic.fill.primary }}
 ```
 
-## ✅ **What TO Do (Token References)**
-
+### ❌ **FORBIDDEN: Hardcoded Values**
 ```tsx
-// ✅ CORRECT - Using design tokens
-<div className="bg-[var(--color-fill-info)] text-[var(--color-content-info)] border-[var(--color-border-info)]">
-  Content
-</div>
+// WRONG: Hardcoded colors
+className="bg-blue-500 text-white rounded-lg p-4"
 
-// ✅ CORRECT - Using typography tokens
-<div 
-  className="w-10 h-10"
-  style={{
-    fontSize: 'var(--font-size-3xs)',
-    fontWeight: 'var(--font-weight-medium)',
-    lineHeight: 'var(--line-height-normal)'
-  }}
->
-  Content
-</div>
+// WRONG: Hardcoded spacing
+className="p-8 m-4 gap-6"
+
+// WRONG: Hardcoded sizes
+className="w-10 h-10 text-lg"
 ```
 
-## 🔍 **Token Reference Checklist**
+## 🔧 How to Build Components
 
-Before building any component, verify you have tokens for:
-
-### **Colors**
-- [ ] Background colors → `var(--color-fill-*)` or `var(--color-surface-*)`
-- [ ] Text colors → `var(--color-content-*)`
-- [ ] Border colors → `var(--color-border-*)`
-- [ ] Fill colors → `var(--color-fill-*)`
-
-### **Typography**
-- [ ] Font family → `var(--font-family-primary)`
-- [ ] Font size → `var(--font-size-*)`
-- [ ] Font weight → `var(--font-weight-*)`
-- [ ] Line height → `var(--line-height-*)`
-- [ ] Letter spacing → `var(--letter-spacing-*)`
-
-### **Spacing & Layout**
-- [ ] Padding → `var(--spacing-*)`
-- [ ] Margins → `var(--spacing-*)`
-- [ ] Gaps → `var(--spacing-*)`
-
-### **Borders & Radius**
-- [ ] Border width → `var(--border-width-*)`
-- [ ] Border radius → `var(--border-radius-*)`
-
-## 🎨 **Avatar Component Example (Token-First)**
+### 1. **Define Tokens First**
+Before writing any component, ensure all needed values exist in `packages/tokens/src/index.ts`:
 
 ```tsx
-export function Avatar({ initials = 'LJ', src, size = 'md' }: AvatarProps) {
+// Add to tokens if missing
+export const colors = {
+  semantic: {
+    fill: {
+      primary: '#1a1a1a',
+      'primary-hover': '#333333',
+      // ... all needed values
+    }
+  }
+}
+```
+
+### 2. **Update Tailwind Config**
+Add corresponding Tailwind extensions in `packages/storybook/tailwind.config.js`:
+
+```js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        fill: {
+          primary: '#1a1a1a',        // From tokens
+          'primary-hover': '#333333', // From tokens
+        }
+      },
+      spacing: {
+        'layout-md': '24px',          // From tokens
+        'button-md': '16px 8px',     // From tokens
+      }
+    }
+  }
+}
+```
+
+### 3. **Build Component Using Only Tokens**
+```tsx
+export function Button({ variant = 'primary' }) {
+  // ONLY token-based classes
+  const baseClasses = [
+    'bg-fill-primary',           // From tokens
+    'text-content-inverse',      // From tokens
+    'rounded-xs',                // From tokens
+    'p-button-md',               // From tokens
+    'min-h-button-md',           // From tokens
+    'font-primary',              // From tokens
+    'font-medium',               // From tokens
+  ];
+
+  return <button className={baseClasses.join(' ')} />;
+}
+```
+
+## 📋 Required Token Categories
+
+### **Colors** - Every color must come from tokens
+- `brand.*` - Brand colors (sand, grey, etc.)
+- `semantic.*` - Semantic colors (content, background, fill, border)
+- `ui.*` - UI state colors (success, warning, error, info)
+
+### **Spacing** - Every spacing value must come from tokens
+- `micro.*` - Micro spacing (2px, 4px, 8px, 12px)
+- `component.*` - Component spacing (16px, 24px, 32px, 48px, 64px)
+- `layout.*` - Layout spacing (8px, 16px, 24px, 32px, 48px, 64px)
+- `button.*` - Button-specific spacing
+
+### **Typography** - Every typography value must come from tokens
+- `fontFamily.primary` - Font family
+- `fontWeight.*` - Font weights
+- `fontSize.*` - Font sizes
+- `lineHeight.*` - Line heights
+
+### **Layout** - Every layout value must come from tokens
+- `borderRadius.*` - Border radius values
+- `shadows.*` - Shadow values
+- `zIndex.*` - Z-index values
+- `animation.*` - Animation values
+
+### **Components** - Component-specific values
+- `components.button.*` - Button dimensions, spacing
+- `components.avatar.*` - Avatar sizes, spacing
+- `components.checkbox.*` - Checkbox dimensions, spacing
+
+## 🚫 Common Violations to Avoid
+
+### **Hardcoded Colors**
+```tsx
+// ❌ WRONG
+className="bg-blue-500 text-white border-gray-300"
+
+// ✅ CORRECT
+className="bg-ui-info-50 text-content-inverse border-border-default"
+```
+
+### **Hardcoded Spacing**
+```tsx
+// ❌ WRONG
+className="p-4 m-2 gap-6"
+
+// ✅ CORRECT
+className="p-layout-sm m-layout-xs gap-layout-md"
+```
+
+### **Hardcoded Sizes**
+```tsx
+// ❌ WRONG
+className="w-10 h-10 text-lg"
+
+// ✅ CORRECT
+className="w-avatar-md h-avatar-md text-lg"
+```
+
+### **Hardcoded Border Radius**
+```tsx
+// ❌ WRONG
+className="rounded-lg rounded-xl"
+
+// ✅ CORRECT
+className="rounded-m rounded-l"
+```
+
+## 🔍 Code Review Checklist
+
+Before any component can be merged:
+
+- [ ] **No hardcoded colors** - All colors use token classes
+- [ ] **No hardcoded spacing** - All spacing uses token classes
+- [ ] **No hardcoded sizes** - All sizes use token classes
+- [ ] **No hardcoded typography** - All typography uses token classes
+- [ ] **No hardcoded layout** - All layout uses token classes
+- [ ] **All needed tokens exist** - No missing token values
+- [ ] **Tailwind config updated** - All tokens have corresponding classes
+
+## 🛠️ Development Workflow
+
+### 1. **Plan Component**
+- What colors, spacing, sizes, typography does it need?
+- Do all these values exist in tokens?
+
+### 2. **Add Missing Tokens**
+- Update `packages/tokens/src/index.ts`
+- Run `npm run build` in tokens package
+
+### 3. **Update Tailwind Config**
+- Add corresponding classes in `tailwind.config.js`
+- Ensure all tokens have Tailwind equivalents
+
+### 4. **Build Component**
+- Use ONLY token-based classes
+- No hardcoded values anywhere
+
+### 5. **Test & Review**
+- Verify all styling comes from tokens
+- Run code review checklist
+
+## 🚨 Enforcement
+
+### **Automated Checks**
+- Linting rules will catch hardcoded values
+- Build will fail if tokens are missing
+- Storybook will show token usage
+
+### **Code Review**
+- Every PR must pass token compliance
+- No exceptions for "quick fixes"
+- Violations will be rejected immediately
+
+### **Documentation**
+- All components must document token usage
+- Token references must be clear and traceable
+
+## 📚 Examples
+
+### **Button Component (Token-Based)**
+```tsx
+export function Button({ variant = 'primary' }) {
+  const baseClasses = [
+    'inline-flex items-center justify-center',
+    'font-medium font-primary',
+    'border-none cursor-pointer',
+    'transition-all duration-base ease-in-out',
+    'min-w-fit',
+    'disabled:opacity-60 disabled:cursor-not-allowed',
+    'rounded-xs',                    // tokens.borderRadius.xs
+    'gap-button',                    // tokens.components.button.gap
+  ];
+
+  const sizeClasses = {
+    sm: 'px-3 py-1.5 min-h-button-sm text-sm',   // tokens.components.button.height.sm
+    md: 'px-4 py-2 min-h-button-md text-base',   // tokens.components.button.height.md
+    lg: 'px-6 py-4 min-h-button-lg text-lg',     // tokens.components.button.height.lg
+  };
+
+  const variantClasses = {
+    primary: 'bg-fill-primary text-content-inverse hover:bg-fill-primary-hover active:bg-fill-primary-active',
+    secondary: 'bg-fill-secondary text-content-primary hover:bg-fill-secondary-hover active:bg-fill-secondary-active',
+    // ... all variants use tokens
+  };
+
+  return <button className={[...baseClasses, sizeClasses[size], variantClasses[variant]].join(' ')} />;
+}
+```
+
+### **Avatar Component (Token-Based)**
+```tsx
+export function Avatar({ size = 'md' }) {
+  const sizeClasses = {
+    xs: 'w-avatar-xs h-avatar-xs text-xs',       // tokens.components.avatar.size.xs
+    sm: 'w-avatar-sm h-avatar-sm text-sm',       // tokens.components.avatar.size.sm
+    md: 'w-avatar-md h-avatar-md text-sm',       // tokens.components.avatar.size.md
+    lg: 'w-avatar-lg h-avatar-lg text-base',     // tokens.components.avatar.size.lg
+    xl: 'w-avatar-xl h-avatar-xl text-lg'        // tokens.components.avatar.size.xl
+  };
+
   return (
-    <div
-      // ✅ Background uses token
-      className={`bg-[var(--color-fill-info)] rounded-full ${sizeClasses[size]}`}
-    >
-      {src ? (
-        <img src={src} alt="Avatar" className="w-full h-full object-cover" />
-      ) : (
-        <div
-          // ✅ Typography uses tokens
-          style={{
-            fontFamily: 'var(--font-family-primary)',
-            fontSize: 'var(--font-size-3xs)',
-            fontWeight: 'var(--font-weight-medium)',
-            lineHeight: 'var(--line-height-normal)',
-            color: 'var(--color-content-info)'
-          }}
-        >
-          {initials}
-        </div>
-      )}
-      
-      {/* ✅ Border uses token */}
-      <div className="absolute inset-0 border border-[var(--color-border-info)] rounded-full" />
+    <div className={`${sizeClasses[size]} rounded-full bg-ui-info-95`}>
+      {/* Content */}
     </div>
   );
 }
 ```
 
-## 🔄 **Figma Export Token Resolution Issue**
+## 🎯 Success Metrics
 
-### **Problem**
-Figma's code export often resolves token references to their raw values:
-- **Token**: `{fill/info}` 
-- **Export**: `#d8e6fb` (resolved value)
+- **100% Token Usage** - No hardcoded values anywhere
+- **Consistent Design** - All components use the same token system
+- **Maintainable Code** - Changes to tokens update all components
+- **Type Safety** - Full TypeScript support for all tokens
+- **Documentation** - Clear token usage in all components
 
-### **Solution**
-1. **Always check your token system first** before using Figma exports
-2. **Map resolved values back to tokens** using your `figma-tokens.css`
-3. **Never copy-paste hardcoded values** from Figma exports
+## 🚀 Getting Started
 
-### **Mapping Process**
-```bash
-# 1. Check what the resolved value should be
-Figma shows: #d8e6fb
-
-# 2. Find the corresponding token in figma-tokens.css
-grep -r "#d8e6fb" packages/tokens/dist/
-
-# 3. Use the token reference
-Instead of: bg-[#d8e6fb]
-Use: bg-[var(--color-fill-info)]
-```
-
-## 📋 **Component Development Workflow**
-
-### **Step 1: Design Analysis**
-1. Review Figma design
-2. **Identify all design properties** (colors, typography, spacing, etc.)
-3. **Check which properties reference tokens** vs. hardcoded values
-
-### **Step 2: Token Verification**
-1. **For each design property**, verify you have a corresponding token
-2. **If token exists**: Use `var(--token-name)`
-3. **If token missing**: Ask user to define it in Figma
-
-### **Step 3: Implementation**
-1. **Build component using only token references**
-2. **No hardcoded values allowed**
-3. **Test in Storybook** to verify token usage
-
-### **Step 4: Documentation**
-1. **Include TokenReference story** showing all tokens used
-2. **Document any missing tokens** that need to be created
-3. **Update this guide** with new patterns
-
-## 🧪 **Testing Token Usage**
-
-### **Storybook TokenReference Story**
-Every component should include a story that:
-- Lists all design tokens used
-- Shows the component with token references highlighted
-- Provides debugging information
-
-### **CSS Inspection**
-In browser dev tools, verify:
-- No hardcoded hex values
-- All values reference `var(--token-name)`
-- Tokens resolve to expected values
-
-## 🚫 **Common Pitfalls to Avoid**
-
-1. **Copy-pasting from Figma exports** without token mapping
-2. **Using Tailwind's color palette** instead of design tokens
-3. **Hardcoding spacing values** instead of using `var(--spacing-*)`
-4. **Using generic font weights** instead of `var(--font-weight-*)`
-5. **Assuming common values** without checking token availability
-
-## 🔧 **Tools & Commands**
-
-### **Check Token Availability**
-```bash
-# View all available tokens
-cat packages/tokens/dist/figma-tokens.css
-
-# Search for specific token types
-grep "color-fill" packages/tokens/dist/figma-tokens.css
-grep "spacing" packages/tokens/dist/figma-tokens.css
-```
-
-### **Update Tokens**
-```bash
-# Regenerate tokens from Figma
-npm run update:tokens
-
-# Rebuild Storybook
-npm run update:storybook
-```
-
-## 📚 **Resources**
-
-- **Design Tokens**: `packages/tokens/dist/figma-tokens.css`
-- **Token Stories**: `packages/storybook/src/stories/DesignTokens.stories.tsx`
-- **Component Examples**: `packages/storybook/src/components/`
-- **Storybook**: Run `npm run update:storybook` to view
-
-## 🎯 **Remember**
-
-**Every pixel, every color, every font property must reference a design token.**
-**No exceptions. No hardcoded values.**
-**This ensures consistency, maintainability, and design system integrity.**
+1. **Read this document completely**
+2. **Understand the token system**
+3. **Plan your component with tokens first**
+4. **Build using ONLY token-based classes**
+5. **Test and verify compliance**
 
 ---
 
-*Last updated: 2025-08-18*
-*Next component: [Component Name]*
+**Remember: Tokens are not optional. They are mandatory. Every component must be built with tokens, or it will not be accepted.**
+
+**This is a design system, not a collection of individual components. Consistency and maintainability are paramount.**

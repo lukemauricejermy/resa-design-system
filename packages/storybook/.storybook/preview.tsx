@@ -1,7 +1,7 @@
 import React from 'react';
 import '../src/figma-tokens.css';
+import '../src/tokens.css';
 import '../src/storybook.css';
-import { ThemeProvider } from '../src/contexts/ThemeContext';
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -16,9 +16,7 @@ const preview = {
   },
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <Story />
-      </ThemeProvider>
+      <Story />
     ),
   ],
 };

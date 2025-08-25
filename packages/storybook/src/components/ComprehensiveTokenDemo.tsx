@@ -8,6 +8,8 @@ interface TokenDemoProps {
 
 export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
   const [isLightTheme, setIsLightTheme] = useState(true);
+  const [isTopbarVisible, setIsTopbarVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleTheme = () => {
     setIsLightTheme(!isLightTheme);
@@ -106,14 +108,45 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
     });
   }, [isLightTheme]);
 
+  // Scroll-based topbar visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show topbar when scrolling up, hide when scrolling down
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsTopbarVisible(false);
+      } else {
+        setIsTopbarVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
+
   return (
     <div className={`min-h-screen transition-colors duration-200 bg-background-primary ${className || ''}`}>
       
-      {/* Fixed Topbar */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-surface-primary border-b border-border-default shadow-sm">
-        <div className="max-w-7xl mx-auto px-layout-md py-layout-sm">
+      {/* Fixed Topbar with Scroll-based Visibility */}
+      <div 
+        className={`fixed top-0 left-0 right-0 z-50 bg-surface-primary border-b border-border-default shadow-sm transition-transform duration-300 ease-in-out ${
+          isTopbarVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
+                  <div className="max-w-7xl mx-auto px-layout-md py-1">
           <div className="flex items-center justify-between">
-            <h1 className="text-heading font-semibold text-content-primary">
+            <h1 className="text-content-primary" style={{
+              fontSize: 'var(--typography-typeStyles-display-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-display-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-display-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-display-medium-letterSpacing)'
+            }}>
               Design Tokens
             </h1>
             
@@ -129,18 +162,28 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
       </div>
 
       {/* Main Content with Top Padding for Fixed Topbar */}
-      <main className="pt-20">
+      <main className="pt-28">
         <div className="max-w-7xl mx-auto p-layout-xl">
         
         {/* Color Tokens Section */}
         <section className="mb-layout-2xl">
-          <h2 className="text-heading font-semibold text-content-primary mb-layout-lg">
-            Color Tokens
+          <h2 className="text-content-primary mb-layout-lg" style={{
+            fontSize: 'var(--typography-typeStyles-heading-extraLarge-fontSize)',
+            fontWeight: 'var(--typography-typeStyles-heading-extraLarge-fontWeight)',
+            lineHeight: 'var(--typography-typeStyles-heading-extraLarge-lineHeight)',
+            letterSpacing: 'var(--typography-typeStyles-heading-extraLarge-letterSpacing)'
+          }}>
+            Colors
           </h2>
           
           {/* Primitive Colors */}
           <div className="mb-layout-xl">
-            <h3 className="text-title font-medium text-content-primary mb-layout-md">
+            <h3 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-heading-large-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-heading-large-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-heading-large-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-heading-large-letterSpacing)'
+            }}>
               Primitive Colors
             </h3>
             <p className="text-body text-content-secondary mb-layout-lg">
@@ -150,7 +193,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-layout-lg">
               {/* Grey Scale */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Grey Scale</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Grey Scale</h4>
                 <div className="space-y-micro-sm">
                   {[10, 20, 30, 40, 50, 60, 70, 80, 90, 95].map((shade) => (
                     <div key={shade} className="flex items-center gap-layout-sm">
@@ -167,7 +215,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Sand Scale */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Sand Scale</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Sand Scale</h4>
                 <div className="space-y-micro-sm">
                   {[10, 20, 30, 40, 50, 60, 70, 80, 90, 95].map((shade) => (
                     <div key={shade} className="flex items-center gap-layout-sm">
@@ -184,7 +237,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Success Scale */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Success Scale</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Success Scale</h4>
                 <div className="space-y-micro-sm">
                   {[10, 20, 30, 40, 50, 60, 70, 80, 90, 95].map((shade) => (
                     <div key={shade} className="flex items-center gap-layout-sm">
@@ -201,7 +259,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Warning Scale */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Warning Scale</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Warning Scale</h4>
                 <div className="space-y-micro-sm">
                   {[10, 20, 30, 40, 50, 60, 70, 80, 90, 95].map((shade) => (
                     <div key={shade} className="flex items-center gap-layout-sm">
@@ -218,7 +281,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Error Scale */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Error Scale</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Error Scale</h4>
                 <div className="space-y-micro-sm">
                   {[10, 20, 30, 40, 50, 60, 70, 80, 90, 95].map((shade) => (
                     <div key={shade} className="flex items-center gap-layout-sm">
@@ -235,7 +303,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Info Scale */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Info Scale</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Info Scale</h4>
                 <div className="space-y-micro-sm">
                   {[10, 20, 30, 40, 50, 60, 70, 80, 90, 95].map((shade) => (
                     <div key={shade} className="flex items-center gap-layout-sm">
@@ -252,7 +325,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Orange Scale */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Orange Scale</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Orange Scale</h4>
                 <div className="space-y-micro-sm">
                   {[10, 20, 30, 40, 50, 60, 70, 80, 90, 95].map((shade) => (
                     <div key={shade} className="flex items-center gap-layout-sm">
@@ -269,7 +347,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Red Scale */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Red Scale</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Red Scale</h4>
                 <div className="space-y-micro-sm">
                   {[10, 20, 30, 40, 50, 60, 70, 80, 90, 95].map((shade) => (
                     <div key={shade} className="flex items-center gap-layout-sm">
@@ -288,7 +371,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
           {/* Semantic Colors */}
           <div className="mb-layout-xl">
-            <h3 className="text-title font-medium text-content-primary mb-layout-md">
+            <h3 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-heading-large-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-heading-large-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-heading-large-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-heading-large-letterSpacing)'
+            }}>
               Semantic Colors
             </h3>
             <p className="text-body text-content-secondary mb-layout-lg">
@@ -298,7 +386,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-layout-lg">
               {/* Content Colors */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Content Colors</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Content Colors</h4>
                 <div className="space-y-micro-sm">
                   <div className="text-content-primary text-label">Primary Content</div>
                   <div className="text-label-small text-content-tertiary">--color-semantic-content-primary</div>
@@ -321,7 +414,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Background Colors */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Background Colors</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Background Colors</h4>
                 <div className="space-y-micro-sm">
                   <div className="h-6 bg-background-primary rounded-xs" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }} />
                   <span className="text-label text-content-secondary">Primary Background</span>
@@ -340,7 +438,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Surface Colors */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Surface Colors</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Surface Colors</h4>
                 <div className="space-y-micro-sm">
                   <div className="h-6 bg-surface-primary rounded-xs" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }} />
                   <span className="text-label text-content-secondary">Primary Surface</span>
@@ -359,7 +462,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Fill Colors */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Fill Colors</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Fill Colors</h4>
                 <div className="space-y-micro-sm">
                   <div className="h-6 bg-fill-primary rounded-xs" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }} />
                   <span className="text-label text-content-secondary">Primary Fill</span>
@@ -387,7 +495,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
               {/* Border Colors */}
               <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-                <h4 className="text-label font-medium text-content-primary mb-layout-sm">Border Colors</h4>
+                <h4 className="text-content-primary mb-layout-sm" style={{
+                  fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                  fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                  lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                  letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+                }}>Border Colors</h4>
                 <div className="space-y-micro-sm">
                   <div className="flex items-center gap-layout-sm">
                     <div className="h-8 w-8 rounded-xs" style={{ border: 'var(--border-width-m) solid var(--color-semantic-border-default)' }} />
@@ -447,8 +560,13 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
         {/* Spacing Tokens Section */}
         <section className="mb-layout-2xl">
-          <h2 className="text-heading font-semibold text-content-primary mb-layout-lg">
-            Spacing Tokens
+          <h2 className="text-content-primary mb-layout-lg" style={{
+            fontSize: 'var(--typography-typeStyles-heading-extraLarge-fontSize)',
+            fontWeight: 'var(--typography-typeStyles-heading-extraLarge-fontWeight)',
+            lineHeight: 'var(--typography-typeStyles-heading-extraLarge-lineHeight)',
+            letterSpacing: 'var(--typography-typeStyles-heading-extraLarge-letterSpacing)'
+          }}>
+            Spacing
           </h2>
           <p className="text-body text-content-secondary mb-layout-lg">
             Consistent spacing values used throughout the design system
@@ -457,7 +575,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-layout-lg">
             {/* Base Spacing */}
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">Base Spacing</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>Base Spacing</h4>
               <div className="space-y-layout-sm">
                 <div className="flex items-center gap-layout-sm">
                   <div className="bg-fill-primary h-4" style={{ width: 'var(--spacing-xxxxl)' }} />
@@ -494,7 +617,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
             {/* Component Spacing */}
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">Component Spacing</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>Component Spacing</h4>
               <div className="space-y-layout-sm">
                 <div className="flex items-center gap-layout-sm">
                   <div className="bg-fill-primary h-4" style={{ width: 'var(--spacing-component-xs)' }} />
@@ -526,7 +654,12 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
             {/* Layout Spacing */}
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">Layout Spacing</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>Layout Spacing</h4>
               <div className="space-y-layout-sm">
                 <div className="flex items-center gap-layout-sm">
                   <div className="bg-fill-primary h-4" style={{ width: 'var(--spacing-layout-xs)' }} />
@@ -565,69 +698,42 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
         {/* Typography Tokens Section */}
         <section className="mb-layout-2xl">
-          <h2 className="text-heading font-semibold text-content-primary mb-layout-lg">
-            Typography Tokens
+          <h2 className="text-content-primary mb-layout-lg" style={{
+            fontSize: 'var(--typography-typeStyles-heading-extraLarge-fontSize)',
+            fontWeight: 'var(--typography-typeStyles-heading-extraLarge-fontWeight)',
+            lineHeight: 'var(--typography-typeStyles-heading-extraLarge-lineHeight)',
+            letterSpacing: 'var(--typography-typeStyles-heading-extraLarge-letterSpacing)'
+          }}>
+            Typography
           </h2>
           <p className="text-body text-content-secondary mb-layout-lg">
             Type styles and font specifications used throughout the design system
           </p>
           
+          {/* Typography Attributes */}
+          <div className="mb-layout-xl">
+            <h3 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-heading-large-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-heading-large-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-heading-large-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-heading-large-letterSpacing)'
+            }}>
+              Typography Attributes
+            </h3>
+            <p className="text-body text-content-secondary mb-layout-lg">
+              Font weights, line heights, letter spacing, and font family specifications
+            </p>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-layout-lg">
-            {/* Type Styles */}
-            <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">Type Styles</h3>
-              <div className="space-y-layout-md">
-                <div>
-                  <h4 className="text-display font-bold text-content-primary mb-layout-xs">
-                    Display
-                  </h4>
-                  <p className="text-label text-content-secondary">
-                    Reserved for big callouts and punchy headlines
-                  </p>
-                  <p className="text-label-small text-content-tertiary">--typography-typeStyles-display</p>
-                </div>
-                <div>
-                  <h4 className="text-heading font-semibold text-content-primary mb-layout-xs">
-                    Heading
-                  </h4>
-                  <p className="text-label text-content-secondary">
-                    Used for categorisation or separation of content
-                  </p>
-                  <p className="text-label-small text-content-tertiary">--typography-typeStyles-heading</p>
-                </div>
-                <div>
-                  <h4 className="text-title font-medium text-content-primary mb-layout-xs">
-                    Title
-                  </h4>
-                  <p className="text-label text-content-secondary">
-                    Names of things within a section that has a heading
-                  </p>
-                  <p className="text-label-small text-content-tertiary">--typography-typeStyles-title</p>
-                </div>
-                <div>
-                  <h4 className="text-body text-content-primary mb-layout-xs">
-                    Body
-                  </h4>
-                  <p className="text-label text-content-secondary">
-                    Used for paragraphs and lines of text
-                  </p>
-                  <p className="text-label-small text-content-tertiary">--typography-typeStyles-body</p>
-                </div>
-                <div>
-                  <h4 className="text-label text-content-primary mb-layout-xs">
-                    Label
-                  </h4>
-                  <p className="text-label text-content-secondary">
-                    Tiny snippets of supporting text, buttons or links
-                  </p>
-                  <p className="text-label-small text-content-tertiary">--typography-typeStyles-label</p>
-                </div>
-              </div>
-            </div>
-
             {/* Font Weights */}
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">Font Weights</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Font Weights</h4>
               <div className="space-y-layout-sm">
                 <div className="text-body text-content-primary" style={{ fontWeight: 'var(--typography-fontWeight-regular)' }}>
                   Regular (400)
@@ -647,15 +753,99 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                 </div>
               </div>
             </div>
+
+            {/* Line Heights */}
+            <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Line Heights</h4>
+              <div className="space-y-layout-sm">
+                <div className="text-body text-content-primary" style={{ lineHeight: 'var(--typography-lineHeight-tight)' }}>
+                  Tight (1.05)
+                  <div className="text-label-small text-content-tertiary">--typography-lineHeight-tight</div>
+                </div>
+                <div className="text-body text-content-primary" style={{ lineHeight: 'var(--typography-lineHeight-normal)' }}>
+                  Normal (1.2)
+                  <div className="text-label-small text-content-tertiary">--typography-lineHeight-normal</div>
+                </div>
+                <div className="text-body text-content-primary" style={{ lineHeight: 'var(--typography-lineHeight-relaxed)' }}>
+                  Relaxed (1.6)
+                  <div className="text-label-small text-content-tertiary">--typography-lineHeight-relaxed</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Letter Spacing */}
+            <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Letter Spacing</h4>
+              <div className="space-y-layout-sm">
+                <div className="text-body text-content-primary" style={{ letterSpacing: 'var(--typography-letterSpacing-tight)' }}>
+                  Tight (-0.04em)
+                  <div className="text-label-small text-content-tertiary">--typography-letterSpacing-tight</div>
+                </div>
+                <div className="text-body text-content-primary" style={{ letterSpacing: 'var(--typography-letterSpacing-normal)' }}>
+                  Normal (-0.03em)
+                  <div className="text-label-small text-content-tertiary">--typography-letterSpacing-normal</div>
+                </div>
+                <div className="text-body text-content-primary" style={{ letterSpacing: 'var(--typography-letterSpacing-small)' }}>
+                  Small (-0.02em)
+                  <div className="text-label-small text-content-tertiary">--typography-letterSpacing-small</div>
+                </div>
+                <div className="text-body text-content-primary" style={{ letterSpacing: 'var(--typography-letterSpacing-micro)' }}>
+                  Micro (-0.01em)
+                  <div className="text-label-small text-content-tertiary">--typography-letterSpacing-micro</div>
+                </div>
+                <div className="text-body text-content-primary" style={{ letterSpacing: 'var(--typography-letterSpacing-none)' }}>
+                  None (normal)
+                  <div className="text-label-small text-content-tertiary">--typography-letterSpacing-none</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Font Family */}
+            <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Font Family</h4>
+              <div className="space-y-layout-sm">
+                <div className="text-body text-content-primary" style={{ fontFamily: 'var(--typography-fontFamily-primary)' }}>
+                  Primary Font
+                  <div className="text-label-small text-content-tertiary">--typography-fontFamily-primary</div>
+                  <div className="text-label text-content-secondary mt-layout-xs">Figtree, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Detailed Type Styles */}
           <div className="mt-layout-lg">
-            <h3 className="text-title font-medium text-content-primary mb-layout-md">Detailed Type Styles</h3>
+            <h3 className="text-content-primary mb-layout-lg" style={{
+              fontSize: 'var(--typography-typeStyles-heading-large-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-heading-large-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-heading-large-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-heading-large-letterSpacing)'
+            }}>Detailed Type Styles</h3>
             
             {/* Display Styles - Full Width */}
             <div className="bg-surface-primary rounded-m p-layout-md mb-layout-lg" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h4 className="text-label font-medium text-content-primary mb-layout-md">Display Styles</h4>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Display Styles</h4>
+              <p className="text-body text-content-secondary mb-layout-lg">Reserved for big callouts and punchy headlines</p>
               <div className="space-y-layout-md">
                 <div>
                   <div 
@@ -669,7 +859,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Display Large - 96px
                   </div>
-                  <p className="text-label text-content-secondary">Reserved for big callouts and punchy headlines</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-display-large</p>
                 </div>
                 <div>
@@ -684,7 +873,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Display Medium - 64px
                   </div>
-                  <p className="text-label text-content-secondary">Reserved for big callouts and punchy headlines</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-display-medium</p>
                 </div>
                 <div>
@@ -699,7 +887,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Display Small - 48px
                   </div>
-                  <p className="text-label text-content-secondary">Reserved for big callouts and punchy headlines</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-display-small</p>
                 </div>
               </div>
@@ -707,7 +894,13 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
             {/* Heading Styles - Full Width */}
             <div className="bg-surface-primary rounded-m p-layout-md mb-layout-lg" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h4 className="text-label font-medium text-content-primary mb-layout-md">Heading Styles</h4>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Heading Styles</h4>
+              <p className="text-body text-content-secondary mb-layout-lg">Used for categorisation or separation of content</p>
               <div className="space-y-layout-md">
                 <div>
                   <div 
@@ -721,7 +914,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Heading Extra Large - 36px
                   </div>
-                  <p className="text-label text-content-secondary">Used for categorisation or separation of content</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-heading-extra-large</p>
                 </div>
                 <div>
@@ -736,7 +928,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Heading Large - 24px
                   </div>
-                  <p className="text-label text-content-secondary">Used for categorisation or separation of content</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-heading-large</p>
                 </div>
                 <div>
@@ -751,7 +942,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Heading Medium - 22px
                   </div>
-                  <p className="text-label text-content-secondary">Used for categorisation or separation of content</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-heading-medium</p>
                 </div>
                 <div>
@@ -766,7 +956,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Heading Small - 20px
                   </div>
-                  <p className="text-label text-content-secondary">Used for categorisation or separation of content</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-heading-small</p>
                 </div>
               </div>
@@ -774,7 +963,13 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
             {/* Title Styles - Full Width */}
             <div className="bg-surface-primary rounded-m p-layout-md mb-layout-lg" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h4 className="text-label font-medium text-content-primary mb-layout-md">Title Styles</h4>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Title Styles</h4>
+              <p className="text-body text-content-secondary mb-layout-lg">Names of things within a section that has a heading</p>
               <div className="space-y-layout-md">
                 <div>
                   <div 
@@ -788,7 +983,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Title Extra Large - 24px
                   </div>
-                  <p className="text-label text-content-secondary">Names of things within a section that has a heading</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-title-extra-large</p>
                 </div>
                 <div>
@@ -803,7 +997,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Title Large - 22px
                   </div>
-                  <p className="text-label text-content-secondary">Names of things within a section that has a heading</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-title-large</p>
                 </div>
                 <div>
@@ -818,7 +1011,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Title Medium - 20px
                   </div>
-                  <p className="text-label text-content-secondary">Names of things within a section that has a heading</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-title-medium</p>
                 </div>
                 <div>
@@ -833,7 +1025,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Title Small - 18px
                   </div>
-                  <p className="text-label text-content-secondary">Names of things within a section that has a heading</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-title-small</p>
                 </div>
                 <div>
@@ -848,7 +1039,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Title Extra Small - 16px
                   </div>
-                  <p className="text-label text-content-secondary">Names of things within a section that has a heading</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-title-extra-small</p>
                 </div>
               </div>
@@ -856,7 +1046,13 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
             {/* Body Styles - Full Width */}
             <div className="bg-surface-primary rounded-m p-layout-md mb-layout-lg" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h4 className="text-label font-medium text-content-primary mb-layout-md">Body Styles</h4>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Body Styles</h4>
+              <p className="text-body text-content-secondary mb-layout-lg">Used for paragraphs and lines of text</p>
               <div className="space-y-layout-md">
                 <div>
                   <div 
@@ -870,7 +1066,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Body Extra Large - 22px
                   </div>
-                  <p className="text-label text-content-secondary">Used for paragraphs and lines of text</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-body-extra-large</p>
                 </div>
                 <div>
@@ -885,7 +1080,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Body Large - 20px
                   </div>
-                  <p className="text-label text-content-secondary">Used for paragraphs and lines of text</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-body-large</p>
                 </div>
                 <div>
@@ -900,7 +1094,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Body Medium - 18px
                   </div>
-                  <p className="text-label text-content-secondary">Used for paragraphs and lines of text</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-body-medium</p>
                 </div>
                 <div>
@@ -915,7 +1108,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Body Small - 16px
                   </div>
-                  <p className="text-label text-content-secondary">Used for paragraphs and lines of text</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-body-small</p>
                 </div>
                 <div>
@@ -930,7 +1122,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Body Extra Small - 14px
                   </div>
-                  <p className="text-label text-content-secondary">Used for paragraphs and lines of text</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-body-extra-small</p>
                 </div>
                 <div>
@@ -945,7 +1136,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Body Extra Extra Small - 12px
                   </div>
-                  <p className="text-label text-content-secondary">Used for paragraphs and lines of text</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-body-extra-extra-small</p>
                 </div>
               </div>
@@ -953,7 +1143,13 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
             {/* Label Styles - Full Width */}
             <div className="bg-surface-primary rounded-m p-layout-md mb-layout-lg" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h4 className="text-label font-medium text-content-primary mb-layout-md">Label Styles</h4>
+              <h4 className="text-content-primary mb-layout-md" style={{
+                fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+                fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+                lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+                letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+              }}>Label Styles</h4>
+              <p className="text-body text-content-secondary mb-layout-lg">Tiny snippets of supporting text, buttons or links</p>
               <div className="space-y-layout-md">
                 <div>
                   <div 
@@ -967,7 +1163,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Label Large - 20px
                   </div>
-                  <p className="text-label text-content-secondary">Tiny snippets of supporting text, buttons or links</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-label-large</p>
                 </div>
                 <div>
@@ -982,7 +1177,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Label Medium - 18px
                   </div>
-                  <p className="text-label text-content-secondary">Tiny snippets of supporting text, buttons or links</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-label-medium</p>
                 </div>
                 <div>
@@ -997,7 +1191,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Label Small - 16px
                   </div>
-                  <p className="text-label text-content-secondary">Tiny snippets of supporting text, buttons or links</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-label-small</p>
                 </div>
                 <div>
@@ -1012,7 +1205,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Label Extra Small - 14px
                   </div>
-                  <p className="text-label text-content-secondary">Tiny snippets of supporting text, buttons or links</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-label-extra-small</p>
                 </div>
                 <div>
@@ -1027,7 +1219,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Label Extra Extra Small - 12px
                   </div>
-                  <p className="text-label text-content-secondary">Tiny snippets of supporting text, buttons or links</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-label-extra-extra-small</p>
                 </div>
                 <div>
@@ -1042,7 +1233,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Label Extra Extra Extra Small - 11px
                   </div>
-                  <p className="text-label text-content-secondary">Tiny snippets of supporting text, buttons or links</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-label-extra-extra-extra-small</p>
                 </div>
                 <div>
@@ -1057,7 +1247,6 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
                   >
                     Label Extra Extra Extra Extra Small - 10px
                   </div>
-                  <p className="text-label text-content-secondary">Tiny snippets of supporting text, buttons or links</p>
                   <p className="text-label-small text-content-tertiary">--typography-typeStyles-label-extra-extra-extra-extra-small</p>
                 </div>
               </div>
@@ -1067,8 +1256,13 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
         {/* Border Radius Tokens Section */}
         <section className="mb-layout-2xl">
-          <h2 className="text-heading font-semibold text-content-primary mb-layout-lg">
-            Border Radius Tokens
+          <h2 className="text-content-primary mb-layout-lg" style={{
+            fontSize: 'var(--typography-typeStyles-heading-extraLarge-fontSize)',
+            fontWeight: 'var(--typography-typeStyles-heading-extraLarge-fontWeight)',
+            lineHeight: 'var(--typography-typeStyles-heading-extraLarge-lineHeight)',
+            letterSpacing: 'var(--typography-typeStyles-heading-extraLarge-letterSpacing)'
+          }}>
+            Border Radius
           </h2>
           <p className="text-body text-content-secondary mb-layout-lg">
             Consistent border radius values for rounded corners
@@ -1076,31 +1270,56 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-layout-lg">
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">XXS</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>XXS</h4>
               <div className="bg-fill-primary h-16 w-16 rounded-xxs" />
               <p className="text-label text-content-secondary mt-layout-sm">2px</p>
               <p className="text-label-small text-content-tertiary mt-layout-xs">--border-radius-xxs</p>
             </div>
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">XS</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>XS</h4>
               <div className="bg-fill-primary h-16 w-16 rounded-xs" />
               <p className="text-label text-content-secondary mt-layout-sm">8px</p>
               <p className="text-label-small text-content-tertiary mt-layout-xs">--border-radius-xs</p>
             </div>
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">S</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>S</h4>
               <div className="bg-fill-primary h-16 w-16 rounded-s" />
               <p className="text-label text-content-secondary mt-layout-sm">12px</p>
               <p className="text-label-small text-content-tertiary mt-layout-xs">--border-radius-s</p>
             </div>
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">M</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>M</h4>
               <div className="bg-fill-primary h-16 w-16 rounded-m" />
               <p className="text-label text-content-secondary mt-layout-sm">20px</p>
               <p className="text-label-small text-content-tertiary mt-layout-xs">--border-radius-m</p>
             </div>
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">L</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>L</h4>
               <div className="bg-fill-primary h-16 w-16 rounded-l" />
               <p className="text-label text-content-secondary mt-layout-sm">48px</p>
               <p className="text-label-small text-content-tertiary mt-layout-xs">--border-radius-l</p>
@@ -1110,8 +1329,13 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
 
         {/* Border Width Tokens Section */}
         <section className="mb-layout-2xl">
-          <h2 className="text-heading font-semibold text-content-primary mb-layout-lg">
-            Border Width Tokens
+          <h2 className="text-content-primary mb-layout-lg" style={{
+            fontSize: 'var(--typography-typeStyles-heading-extraLarge-fontSize)',
+            fontWeight: 'var(--typography-typeStyles-heading-extraLarge-fontWeight)',
+            lineHeight: 'var(--typography-typeStyles-heading-extraLarge-lineHeight)',
+            letterSpacing: 'var(--typography-typeStyles-heading-extraLarge-letterSpacing)'
+          }}>
+            Border Width
           </h2>
           <p className="text-body text-content-secondary mb-layout-lg">
             Consistent border width values for borders and outlines
@@ -1119,19 +1343,34 @@ export function ComprehensiveTokenDemo({ className }: TokenDemoProps) {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-layout-lg">
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">None</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>None</h4>
               <div className="h-8 w-8 border-0 rounded-xs" style={{ backgroundColor: 'var(--color-semantic-light-fill-secondary)' }} />
               <p className="text-label text-content-secondary mt-layout-sm">0px</p>
               <p className="text-label-small text-content-tertiary mt-layout-xs">No border</p>
             </div>
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">S</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>S</h4>
               <div className="h-8 w-8 rounded-xs" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-active)' }} />
               <p className="text-label text-content-secondary mt-layout-sm">1px</p>
               <p className="text-label-small text-content-tertiary mt-layout-xs">--border-width-s</p>
             </div>
             <div className="bg-surface-primary rounded-m p-layout-md" style={{ border: 'var(--border-width-s) solid var(--color-semantic-border-default)' }}>
-              <h3 className="text-title font-medium text-content-primary mb-layout-md">M</h3>
+              <h4 className="text-content-primary mb-layout-md" style={{
+              fontSize: 'var(--typography-typeStyles-title-medium-fontSize)',
+              fontWeight: 'var(--typography-typeStyles-title-medium-fontWeight)',
+              lineHeight: 'var(--typography-typeStyles-title-medium-lineHeight)',
+              letterSpacing: 'var(--typography-typeStyles-title-medium-letterSpacing)'
+            }}>M</h4>
               <div className="h-8 w-8 rounded-xs" style={{ border: 'var(--border-width-m) solid var(--color-semantic-border-active)' }} />
               <p className="text-label text-content-secondary mt-layout-sm">2px</p>
               <p className="text-label-small text-content-tertiary mt-layout-xs">--border-width-m</p>
